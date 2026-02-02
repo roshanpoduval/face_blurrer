@@ -22,7 +22,7 @@ Run the script with the following command:
 
 ### 1. Image Mode
 ```bash
-python script.py --mode image --filePath path/to/image.jpg
+python main.py --mode image --filePath path/to/image.jpg
 ```
 - Reads the image from `filePath`.
 - Detects faces and blurs them.
@@ -30,7 +30,7 @@ python script.py --mode image --filePath path/to/image.jpg
 
 ### 2. Video Mode
 ```bash
-python script.py --mode video --filePath path/to/video.mp4
+python main.py --mode video --filePath path/to/video.mp4
 ```
 - Reads the video from `filePath`.
 - Processes each frame to blur faces.
@@ -38,11 +38,22 @@ python script.py --mode video --filePath path/to/video.mp4
 
 ### 3. Webcam Mode
 ```bash
-python script.py --mode webcam
+python main.py --mode webcam
 ```
 - Uses the **default webcam** (index `0`).
 - Displays real-time face-blurring.
 - Press `q` to **exit**.
+
+### Blur Customization
+You can customize the blur effect with the following options:
+- `--blur-type`: Choose between `oval` (default) and `rectangle`.
+- `--feather`: Controls the softness of the oval blur's edges (default: 6).
+- `--scale`: Enlarges the blurred area by a given factor (default: 1.25).
+
+Example with custom blur:
+```bash
+python main.py --mode image --filePath path/to/image.jpg --blur-type oval --feather 15 --scale 1.3
+```
 
 ## Code Explanation
 
@@ -50,7 +61,7 @@ python script.py --mode webcam
 - Converts the input image to **RGB** (required by MediaPipe).
 - Uses MediaPipe's `FaceDetection` model to detect faces.
 - Extracts **bounding box coordinates** of detected faces.
-- Applies a **blur filter** to the detected face region.
+- Applies a **blur filter** to the detected face region. You can choose between a rectangular or a feathered oval blur.
 
 ### 2. **Processing Modes**
 - **Image Mode**: Loads an image, processes it, and saves the blurred version.
@@ -66,6 +77,7 @@ Press `q` to exit webcam mode.
 ## Notes
 - The script uses **MediaPipe's Face Detection model (model_selection=0)**.
 - A **minimum detection confidence of 0.5** is used.
+- The default blur type is **oval** with a **feather amount of 6**, and a **scale factor of 1.25**.
 - Blurring is done using `cv2.blur(img, (30, 30))`.
 
 ## License
